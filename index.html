@@ -409,6 +409,9 @@ import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager
 import { firebaseConfig, PERSONAS } from './config.js';
 const MEDIOS = ['Débito Santander', 'Visa Santander', 'Visa Galicia', 'Visa Galicia (ex HSBC)', 'Visa BBVA', 'Mercado Pago', 'Efectivo', 'Transferencia'];
 const MEDIOS_FIJOS = MEDIOS.concat(['Tarjetas (varias)']);
+// Medios de la primera versión de la app
+const MEDIOS_VIEJOS = { 'Débito / QR': 'Débito Santander', 'Tarjeta de crédito': 'Tarjeta (sin especificar)' };
+const medioNorm = (m) => MEDIOS_VIEJOS[m] || m || 'Sin asignar';
 const HOGAR = 'kovac';
 
 const TIPOS = { ingreso: 'Ingreso', fijo: 'Gasto fijo', variable: 'Gasto variable', control: 'Control (no suma)' };
@@ -521,6 +524,7 @@ function escucharMes() {
     renderTodo(false);
   }, errorDatos));
   S.unsubMes.push(onSnapshot(query(colGastos, where('mes', '==', S.mes)), (snap) => {
+    snap.docs.forEach((d) => { if (d.data().medio === 'Débito / QR') setDoc(doc(colGastos, d.id), { medio: 'Débito Santander' }, { merge: true }).catch(() => {}); });
     S.gastos = snap.docs.map((d) => Object.assign({ id: d.id }, d.data()))
       .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '') || ((b.creadoMs || 0) - (a.creadoMs || 0)));
     renderTodo(false);
@@ -616,7 +620,7 @@ function filaGasto(g) {
   const [y, m, d] = String(g.fecha || '').split('-');
   const small = el('small', {});
   if (fotoDe(g.quien)) small.append(el('img', { class: 'av sm', src: fotoDe(g.quien), alt: '' }));
-  small.append((d ? d + '/' + m : '') + ' · ' + g.quien + ' · ' + (g.medio || ''));
+  small.append((d ? d + '/' + m : '') + ' · ' + g.quien + ' · ' + medioNorm(g.medio));
   const x = el('button', { class: 'x', type: 'button' }, 'Borrar');
   x.onclick = () => {
     if (!x.classList.contains('confirm')) {
@@ -859,8 +863,8 @@ function itemsDelMes(c) {
   S.gastos.forEach((g) => {
     const r = rubroPorId(g.rubroId);
     if (r && r.tipo === 'control') return;
-    const k = g.rubroId + '|' + (g.medio || 'Sin asignar');
-    if (!agg[k]) agg[k] = { nombre: r ? r.nombre : g.rubroNombre, grupo: (r && r.grupo) || 'Otros', medio: g.medio || 'Sin asignar', monto: 0, origen: 'cargado', n: 0 };
+    const k = g.rubroId + '|' + medioNorm(g.medio);
+    if (!agg[k]) agg[k] = { nombre: r ? r.nombre : g.rubroNombre, grupo: (r && r.grupo) || 'Otros', medio: medioNorm(g.medio), monto: 0, origen: 'cargado', n: 0 };
     agg[k].monto += Number(g.monto) || 0; agg[k].n++;
   });
   return items.concat(Object.values(agg));
@@ -982,7 +986,7 @@ function descargar(nombre, filas) {
 const num = (n) => Math.round(Number(n) || 0);
 function filasGastos(lista) {
   return [['fecha', 'mes', 'quien', 'rubro', 'tipo', 'monto', 'medio', 'nota', 'cargado_por', 'id'],
-    ...lista.map((g) => { const r = rubroPorId(g.rubroId); return [g.fecha, g.mes, g.quien, r ? r.nombre : g.rubroNombre, r ? r.tipo : '', num(g.monto), g.medio, g.nota, g.creadoPor, g.id]; })];
+    ...lista.map((g) => { const r = rubroPorId(g.rubroId); return [g.fecha, g.mes, g.quien, r ? r.nombre : g.rubroNombre, r ? r.tipo : '', num(g.monto), medioNorm(g.medio), g.nota, g.creadoPor, g.id]; })];
 }
 $('csvMes').onclick = () => descargar('gastos-' + S.mes + '.csv', filasGastos(S.gastos));
 async function csvTodo() {
