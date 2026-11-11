@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Solo estas dos cuentas de Google pueden leer y escribir los datos del hogar.
+    // Tienen que ser los mismos mails que en PERSONAS (index.html).
+    function esDeLaCasa() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in ['simonkovac16@gmail.com', 'virginiahanson86@gmail.com'];
+    }
+
+    match /hogares/kovac/{documento=**} {
+      allow read, write: if esDeLaCasa();
+    }
+
+    // Todo lo demás, cerrado.
+    match /{documento=**} {
+      allow read, write: if false;
+    }
+  }
+}
