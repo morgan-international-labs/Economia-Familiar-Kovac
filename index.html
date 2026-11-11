@@ -111,6 +111,52 @@
   .ptot b { text-align: right; }
   .ptot .m { font-size: 18px; padding-top: 8px; border-top: 2px solid var(--line); }
 
+  /* Resumen */
+  .toggle { display: inline-flex; background: var(--soft); border-radius: 99px; padding: 3px; margin-bottom: 14px; }
+  .toggle button { border: 0; background: transparent; font: inherit; font-size: 14px; padding: 7px 14px; border-radius: 99px; cursor: pointer; color: var(--muted); }
+  .toggle button.on { background: #fff; color: var(--brand); font-weight: 700; box-shadow: 0 1px 3px rgba(42,35,64,.12); }
+  details.res { border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; background: #fff; overflow: hidden; }
+  details.res summary { list-style: none; cursor: pointer; padding: 14px; }
+  details.res summary::-webkit-details-marker { display: none; }
+  details.res .t { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  details.res .t b { font-size: 16px; } details.res .t span { font-weight: 600; }
+  details.res .t .chev { color: var(--muted); font-size: 12px; transition: transform .2s; display: inline-block; margin-left: 6px; }
+  details.res[open] .t .chev { transform: rotate(90deg); }
+  details.res .bar { margin: 8px 0 0; height: 6px; }
+  details.res .bar .fill { background: var(--brand); }
+  details.res .items { border-top: 1px solid var(--line); padding: 4px 14px 10px; background: #fcfbfe; }
+  details.res .it { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-top: 1px dashed var(--line); font-size: 14px; }
+  details.res .it:first-child { border-top: 0; }
+  details.res .it small { display: block; color: var(--muted); font-size: 12px; }
+  details.res .it .v { text-align: right; white-space: nowrap; font-weight: 600; }
+  details.res .it .v small { font-weight: 400; }
+  .resTop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 8px; }
+  @media (max-width: 520px) { .resTop { grid-template-columns: 1fr 1fr; } }
+
+  /* Evolución */
+  .chart { width: 100%; overflow-x: auto; }
+  .chart svg { display: block; min-width: 560px; }
+  .leyenda { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); margin: 6px 0 12px; }
+  .leyenda i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -2px; margin-right: 5px; }
+  details.ev { border-top: 1px solid var(--line); }
+  details.ev summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 8px; padding: 10px 0; font-size: 14px; align-items: center; }
+  details.ev summary::-webkit-details-marker { display: none; }
+  details.ev summary span:not(:first-child) { text-align: right; }
+  details.ev summary small { display: block; font-size: 11px; color: var(--muted); }
+  .evhead { display: grid; grid-template-columns: 1.2fr 1fr 1fr 1fr; gap: 8px; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; padding-bottom: 6px; }
+  .evhead span:not(:first-child) { text-align: right; }
+  details.ev .det { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; font-size: 13px; padding: 0 0 12px 10px; color: var(--ink); }
+  details.ev .det .h { grid-column: 1 / -1; font-weight: 700; color: var(--muted); margin-top: 6px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  .tag { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 99px; background: var(--soft); color: var(--brand); font-weight: 600; }
+  .tag.real { background: #e4f2ec; color: var(--ok); }
+  .gear { border: 0; background: rgba(255,255,255,.18); color: #fff; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: grid; place-items: center; flex: none; }
+  .gear:hover { background: rgba(255,255,255,.28); }
+  .rrow2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 8px; padding: 10px 0; border-top: 1px solid var(--line); }
+  .rrow2:first-child { border-top: 0; }
+  .rrow2 input, .rrow2 select { padding: 8px 10px; font-size: 14px; }
+  .rrow2 .full { grid-column: 1 / -1; }
+  .psub { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; color: var(--brand); margin: 12px 0 2px; }
+
   /* Ajustes */
   .rrow { display: grid; grid-template-columns: 1fr 150px auto; gap: 8px; align-items: center; padding: 6px 0; border-top: 1px solid var(--line); }
   .rrow:first-child { border-top: 0; }
@@ -170,15 +216,19 @@
           <h1>Familia Kovac</h1>
           <div class="mesnav"><button id="mesPrev" aria-label="Mes anterior">‹</button><span id="mesTxt">–</span><button id="mesNext" aria-label="Mes siguiente">›</button></div>
         </div>
-        <img class="fam" src="img/familia.jpg" alt="Familia Kovac">
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="gear" id="btnAjustes" aria-label="Ajustes"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
+          <img class="fam" src="img/familia.jpg" alt="Familia Kovac">
+        </div>
       </div>
       <div class="big" id="hBig">–</div>
       <div class="sub" id="hSub">Cargando…</div>
       <nav class="tabs" id="tabs">
         <button data-v="inicio" class="on"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>Inicio</button>
+        <button data-v="resumen"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg>Resumen</button>
+        <button data-v="evol"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Evolución</button>
         <button data-v="movs"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1"/><circle cx="3.5" cy="12" r="1"/><circle cx="3.5" cy="18" r="1"/></svg>Movimientos</button>
         <button data-v="plan"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 1 1-9-9v9z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></svg>Plan</button>
-        <button data-v="ajustes"><svg class="i" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Ajustes</button>
       </nav>
     </div>
   </header>
@@ -188,6 +238,46 @@
       <h2>Todavía no hay un plan cargado</h2>
       <p class="small">Podés cargar el plan que armamos en la planilla (rubros y montos de noviembre 2026 a junio 2027) y después ajustarlo desde la pestaña Plan.</p>
       <button class="btn" id="btnSeed">Cargar plan inicial</button>
+    </div>
+
+    <div class="card lift hidden" id="migCard">
+      <h2>Hay una actualización del plan</h2>
+      <p class="small">Divide los gastos fijos en sus partes (seguros, comisiones, cuotas por tarjeta, servicios) con la tarjeta o el medio con que se pagan, separa combustible y peajes, y suma la historia real de agosto a octubre. Los gastos que ya cargaste no se tocan. Los montos de seguros, comisiones, cuotas, servicios y movilidad de noviembre a junio se reemplazan por los del detalle.</p>
+      <button class="btn" id="btnMigrar">Actualizar plan</button>
+    </div>
+
+    <!-- RESUMEN -->
+    <div id="vResumen" class="hidden">
+      <div class="card lift">
+        <h2>¿En qué se va la plata este mes?</h2>
+        <div class="resTop" id="resTop"></div>
+        <p class="legend" id="resNota" style="margin:4px 0 14px"></p>
+        <div class="toggle" id="resToggle">
+          <button data-m="medio" class="on">Por tarjeta o medio</button>
+          <button data-m="grupo">Por rubro</button>
+        </div>
+        <div id="resLista"></div>
+      </div>
+    </div>
+
+    <!-- EVOLUCIÓN -->
+    <div id="vEvol" class="hidden">
+      <div class="card lift">
+        <h2>Evolución mes a mes</h2>
+        <p class="small" id="evResumen" style="margin-top:-6px"></p>
+        <div class="leyenda">
+          <span><i style="background:var(--ok)"></i>Ingresos</span>
+          <span><i style="background:var(--brand)"></i>Gastos</span>
+          <span><i style="background:var(--brand);opacity:.4"></i>Meses del plan (proyectado)</span>
+        </div>
+        <div class="chart" id="evChart"></div>
+      </div>
+      <div class="card">
+        <h2>Detalle por mes</h2>
+        <div class="evhead"><span>Mes</span><span>Ingresos</span><span>Gastos</span><span>Diferencia</span></div>
+        <div id="evTabla"></div>
+        <p class="legend" style="margin-top:12px">Agosto a octubre: movimientos reales de la cuenta Santander (y de Mercado Pago en octubre); las tarjetas figuran por lo que se pagó ese mes. Las transferencias de Vir de fin de mes cuentan para el mes siguiente. Desde noviembre: el plan (sin el ahorro, que no es un gasto).</p>
+      </div>
     </div>
 
     <!-- INICIO -->
@@ -316,7 +406,9 @@ import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRe
 import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager, collection, doc, getDoc, getDocs,
   setDoc, addDoc, deleteDoc, onSnapshot, query, where, writeBatch, serverTimestamp } from 'firebase/firestore';
 
-import { firebaseConfig, PERSONAS, MEDIOS } from './config.js';
+import { firebaseConfig, PERSONAS } from './config.js';
+const MEDIOS = ['Débito Santander', 'Visa Santander', 'Visa Galicia', 'Visa Galicia (ex HSBC)', 'Visa BBVA', 'Mercado Pago', 'Efectivo', 'Transferencia'];
+const MEDIOS_FIJOS = MEDIOS.concat(['Tarjetas (varias)']);
 const HOGAR = 'kovac';
 
 const TIPOS = { ingreso: 'Ingreso', fijo: 'Gasto fijo', variable: 'Gasto variable', control: 'Control (no suma)' };
@@ -330,6 +422,8 @@ const colRubros = collection(db, 'hogares', HOGAR, 'rubros');
 const colMeses = collection(db, 'hogares', HOGAR, 'meses');
 const colGastos = collection(db, 'hogares', HOGAR, 'gastos');
 const docFondo = doc(db, 'hogares', HOGAR, 'config', 'fondo');
+const docApp = doc(db, 'hogares', HOGAR, 'config', 'app');
+const colHist = collection(db, 'hogares', HOGAR, 'historial');
 
 // ---------- utilidades ----------
 const $ = (id) => document.getElementById(id);
@@ -367,7 +461,7 @@ const fotoDe = (n) => (PERSONAS.find((p) => p.nombre === n) || {}).foto || '';
 
 // ---------- estado ----------
 const S = { user: null, yo: null, mes: mesDeHoy(), rubros: [], plan: { montos: {}, ahorro: 0 }, gastos: [],
-  vista: 'inicio', rubroSel: null, quien: null, rubrosListos: false, unsubMes: [], todos: {}, fondo: {} };
+  vista: 'inicio', rubroSel: null, quien: null, rubrosListos: false, unsubMes: [], todos: {}, fondo: {}, hist: {}, version: null, resModo: 'medio' };
 function mesDeHoy() { return mesDe(hoyISO()); }
 const rubroPorId = (id) => S.rubros.find((r) => r.id === id);
 const activos = (tipos) => S.rubros.filter((r) => r.activo !== false && tipos.includes(r.tipo));
@@ -414,6 +508,8 @@ function iniciarDatos() {
   }, errorDatos);
   onSnapshot(colMeses, (snap) => { S.todos = {}; snap.docs.forEach((d) => (S.todos[d.id] = d.data())); renderTodo(false); }, errorDatos);
   onSnapshot(docFondo, (d) => { S.fondo = d.exists() ? d.data() : {}; renderTodo(false); }, errorDatos);
+  onSnapshot(docApp, (d) => { S.version = d.exists() ? Number(d.data().version) || 1 : 1; renderTodo(false); }, errorDatos);
+  onSnapshot(colHist, (snap) => { S.hist = {}; snap.docs.forEach((d) => (S.hist[d.id] = d.data())); renderTodo(false); }, errorDatos);
   escucharMes();
 }
 function escucharMes() {
@@ -454,6 +550,7 @@ function renderTodo(estructura) {
   $('mesTxt').textContent = nombreMes(S.mes);
   const sinPlan = S.rubrosListos && S.rubros.length === 0;
   $('seedCard').classList.toggle('hidden', !sinPlan);
+  $('migCard').classList.toggle('hidden', sinPlan || !S.rubrosListos || S.version === null || S.version >= 2);
   const c = calc();
   $('hBig').textContent = fmt(c.dispVar);
   const quedan = S.mes === mesDeHoy() ? ' · quedan ' + (diasDelMes(S.mes) - new Date().getDate()) + ' días' : '';
@@ -462,6 +559,8 @@ function renderTodo(estructura) {
   renderMovs();
   renderPlan(c, estructura);
   renderFondo();
+  renderResumen(c);
+  renderEvol();
   if (estructura) renderAjustes();
 }
 
@@ -548,22 +647,35 @@ $('mRubro').onchange = renderMovs; $('mQuien').onchange = renderMovs;
 // Plan: las casillas se arman una vez por mes/rubros; los cambios de otros se reflejan sin perder el foco
 let planClave = '';
 const planInputs = {};
+const planSubs = [];
 function renderPlan(c, estructura) {
-  const clave = S.mes + '|' + S.rubros.map((r) => r.id + r.nombre + r.tipo + r.activo).join(',');
+  const clave = S.mes + '|' + S.rubros.map((r) => r.id + r.nombre + r.tipo + r.activo + r.grupo + r.medio).join(',');
   if (estructura || clave !== planClave) {
     planClave = clave;
     const cont = $('planRows'); cont.replaceChildren();
     for (const k of Object.keys(planInputs)) delete planInputs[k];
+    planSubs.length = 0;
     ORDEN_TIPOS.forEach((tipo) => {
       const rs = S.rubros.filter((r) => r.tipo === tipo && (r.activo !== false || c.monto(r.id)));
       if (!rs.length) return;
       cont.append(el('h3', {}, { ingreso: 'Ingresos', fijo: 'Gastos fijos', variable: 'Gastos variables (cupos)', control: 'Control (no suma)' }[tipo]));
-      rs.forEach((r) => cont.append(filaPlan(r.id, r.nombre)));
+      const grupos = [];
+      rs.forEach((r) => { const g = r.grupo || ''; if (!grupos.includes(g)) grupos.push(g); });
+      grupos.forEach((g) => {
+        const rg = rs.filter((r) => (r.grupo || '') === g);
+        if (g && grupos.length > 1) {
+          const tot = el('span', {});
+          planSubs.push([tot, rg.map((r) => r.id)]);
+          cont.append(el('div', { class: 'psub' }, el('span', {}, g), tot));
+        }
+        rg.forEach((r) => cont.append(filaPlan(r.id, r.nombre + (r.tipo === 'fijo' && r.medio ? ' · ' + r.medio : ''))));
+      });
     });
     cont.append(el('h3', {}, 'Ahorro'));
     cont.append(filaPlan('__ahorro', 'Ahorro planificado ($, se pasa a USD)'));
     cont.append(filaPlan('__usd', 'Otros movimientos del fondo (USD: autos, etc.)'));
   }
+  planSubs.forEach(([span, ids]) => { span.textContent = fmt(ids.reduce((t, id) => t + c.monto(id), 0)); });
   for (const [id, inp] of Object.entries(planInputs)) {
     if (document.activeElement === inp) continue;
     const v = id === '__ahorro' ? c.ahorro : id === '__usd' ? S.plan.usd : c.monto(id);
@@ -610,7 +722,7 @@ function renderAjustes() {
     cont.append(el('h3', {}, TIPOS[tipo]));
     const grupo = el('div', {});
     rs.forEach((r, i) => {
-      const nombre = el('input', { value: r.nombre, 'aria-label': 'Nombre del rubro' });
+      const nombre = el('input', { value: r.nombre, 'aria-label': 'Nombre del rubro', class: 'full' });
       nombre.onchange = () => { const n = nombre.value.trim(); if (n) setDoc(doc(colRubros, r.id), { nombre: n }, { merge: true }); };
       const tipoSel = el('select', { 'aria-label': 'Tipo' }, ...ORDEN_TIPOS.map((t) => el('option', { value: t }, TIPOS[t])));
       tipoSel.value = r.tipo;
@@ -621,7 +733,13 @@ function renderAjustes() {
       const activo = r.activo !== false;
       const arch = el('button', { class: 'mini' + (activo ? '' : ' off'), type: 'button', title: activo ? 'Ocultar rubro' : 'Volver a usar' }, activo ? 'Ocultar' : 'Usar');
       arch.onclick = () => setDoc(doc(colRubros, r.id), { activo: !activo }, { merge: true });
-      grupo.append(el('div', { class: 'rrow' + (activo ? '' : ' archivado') }, nombre, tipoSel, el('div', { style: 'display:flex;gap:4px' }, subir, arch)));
+      const grp = el('input', { value: r.grupo || '', placeholder: 'Grupo (ej: Seguros)', 'aria-label': 'Grupo' });
+      grp.onchange = () => setDoc(doc(colRubros, r.id), { grupo: grp.value.trim() }, { merge: true });
+      const medio = el('select', { 'aria-label': 'Medio de pago' }, el('option', { value: '' }, 'Medio de pago…'), ...MEDIOS_FIJOS.map((m) => el('option', { value: m }, m)));
+      medio.value = r.medio || '';
+      medio.onchange = () => setDoc(doc(colRubros, r.id), { medio: medio.value }, { merge: true });
+      grupo.append(el('div', { class: 'rrow2' + (activo ? '' : ' archivado') }, nombre, tipoSel, grp,
+        r.tipo === 'fijo' ? medio : el('span', {}), el('div', { style: 'display:flex;gap:4px' }, subir, arch)));
     });
     cont.append(grupo);
   });
@@ -646,7 +764,7 @@ $('btnAgregar').onclick = () => {
 
 // ---------- cargar gasto ----------
 $('fMedio').replaceChildren(...MEDIOS.map((m) => el('option', {}, m)));
-$('fMedio').value = store.get('fk_medio') || MEDIOS[0];
+$('fMedio').value = MEDIOS.includes(store.get('fk_medio')) ? store.get('fk_medio') : MEDIOS[0];
 $('fFecha').value = hoyISO();
 $('fMonto').addEventListener('blur', () => { const n = parsearMonto($('fMonto').value); $('fMonto').value = n ? n.toLocaleString('es-AR') : ''; });
 $('btnGuardar').onclick = () => {
@@ -671,12 +789,14 @@ $('btnGuardar').onclick = () => {
 // ---------- navegación ----------
 function irA(v) {
   S.vista = v;
-  ['inicio', 'movs', 'plan', 'ajustes'].forEach((x) => $('v' + x.charAt(0).toUpperCase() + x.slice(1)).classList.toggle('hidden', x !== v));
+  ['inicio', 'resumen', 'evol', 'movs', 'plan', 'ajustes'].forEach((x) => $('v' + x.charAt(0).toUpperCase() + x.slice(1)).classList.toggle('hidden', x !== v));
   document.querySelectorAll('#tabs button').forEach((b) => b.classList.toggle('on', b.dataset.v === v));
   window.scrollTo(0, 0);
 }
 document.querySelectorAll('#tabs button').forEach((b) => (b.onclick = () => irA(b.dataset.v)));
 document.querySelectorAll('[data-goto]').forEach((b) => (b.onclick = () => irA(b.dataset.goto)));
+$('btnAjustes').onclick = () => irA('ajustes');
+document.querySelectorAll('#resToggle button').forEach((b) => (b.onclick = () => { S.resModo = b.dataset.m; document.querySelectorAll('#resToggle button').forEach((x) => x.classList.toggle('on', x === b)); renderResumen(calc()); }));
 $('mesPrev').onclick = () => { S.mes = sumarMes(S.mes, -1); planClave = ''; escucharMes(); renderTodo(false); };
 $('mesNext').onclick = () => { S.mes = sumarMes(S.mes, 1); planClave = ''; escucharMes(); renderTodo(false); };
 
@@ -727,6 +847,129 @@ function renderFondo() {
     : 'Ojo: en algún mes el fondo baja de la reserva en efectivo (mínimo ' + usd(min) + ').'));
 }
 
+
+// ---------- resumen del mes ----------
+function itemsDelMes(c) {
+  const items = [];
+  S.rubros.filter((r) => r.tipo === 'fijo').forEach((r) => {
+    const m = c.monto(r.id);
+    if (m) items.push({ nombre: r.nombre, grupo: r.grupo || 'Otros', medio: r.medio || 'Sin asignar', monto: m, origen: 'plan' });
+  });
+  const agg = {};
+  S.gastos.forEach((g) => {
+    const r = rubroPorId(g.rubroId);
+    if (r && r.tipo === 'control') return;
+    const k = g.rubroId + '|' + (g.medio || 'Sin asignar');
+    if (!agg[k]) agg[k] = { nombre: r ? r.nombre : g.rubroNombre, grupo: (r && r.grupo) || 'Otros', medio: g.medio || 'Sin asignar', monto: 0, origen: 'cargado', n: 0 };
+    agg[k].monto += Number(g.monto) || 0; agg[k].n++;
+  });
+  return items.concat(Object.values(agg));
+}
+function renderResumen(c) {
+  const items = itemsDelMes(c);
+  const total = items.reduce((t, i) => t + i.monto, 0);
+  const fijos = items.filter((i) => i.origen === 'plan').reduce((t, i) => t + i.monto, 0);
+  $('resTop').replaceChildren(
+    kpi('Salidas del mes', fmt(total)), kpi('Gastos fijos (plan)', fmt(fijos)), kpi('Variables cargados', fmt(total - fijos)));
+  $('resNota').textContent = 'Fijos: lo que se paga este mes según el plan. Variables: lo que cargaron hasta hoy (quedan ' + fmt(Math.max(0, c.dispVar)) + ' de cupo). Cuotas, seguros, comisiones y servicios figuran en el mes en que se paga el resumen de la tarjeta.';
+  const clave = S.resModo === 'medio' ? 'medio' : 'grupo';
+  const otra = clave === 'medio' ? 'grupo' : 'medio';
+  const grupos = {};
+  items.forEach((i) => { (grupos[i[clave]] = grupos[i[clave]] || []).push(i); });
+  const orden = Object.entries(grupos).map(([k, its]) => [k, its, its.reduce((t, i) => t + i.monto, 0)]).sort((a, b) => b[2] - a[2]);
+  const cont = $('resLista'); cont.replaceChildren();
+  if (!orden.length) { cont.append(el('p', { class: 'empty' }, 'Todavía no hay datos para este mes.')); return; }
+  orden.forEach(([k, its, sub]) => {
+    const fill = el('div', { class: 'fill' }); fill.style.width = (total > 0 ? Math.max(0, sub / total * 100) : 0) + '%';
+    const lista = el('div', { class: 'items' }, ...its.sort((a, b) => b.monto - a.monto).map((i) =>
+      el('div', { class: 'it' },
+        el('div', {}, i.nombre, el('small', {}, i[otra] + (i.origen === 'cargado' ? ' · ' + i.n + (i.n === 1 ? ' gasto cargado' : ' gastos cargados') : ' · plan'))),
+        el('div', { class: 'v' }, fmt(i.monto), el('small', { style: 'display:block' }, sub ? Math.round(i.monto / sub * 100) + '%' : '')))));
+    cont.append(el('details', { class: 'res' },
+      el('summary', {},
+        el('div', { class: 't' }, el('span', {}, k, el('span', { class: 'chev' }, '▶')), el('b', {}, fmt(sub))),
+        el('div', { class: 'small' }, (total > 0 ? Math.round(sub / total * 100) : 0) + '% del total · ' + its.length + (its.length === 1 ? ' concepto' : ' conceptos')),
+        el('div', { class: 'bar' }, fill)),
+      lista));
+  });
+}
+
+// ---------- evolución ----------
+const MES_CORTO = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const mesCorto = (m) => { const [y, mo] = m.split('-').map(Number); return MES_CORTO[mo - 1] + ' ' + String(y).slice(2); };
+const sumaObj = (o) => Object.values(o || {}).reduce((t, v) => t + (Number(v) || 0), 0);
+function serieEvol() {
+  const tipoDe = {}; S.rubros.forEach((r) => (tipoDe[r.id] = r.tipo));
+  const meses = [...new Set(Object.keys(S.hist).concat(Object.keys(S.todos)))].sort();
+  return meses.map((m) => {
+    const h = S.hist[m];
+    if (h) return { mes: m, real: true, ing: sumaObj(h.ingresos), egr: sumaObj(h.egresos), det: [['Ingresos', h.ingresos], ['Gastos', h.egresos]], nota: h.nota };
+    const montos = (S.todos[m] || {}).montos || {};
+    const por = { ingreso: {}, fijo: {}, variable: {} };
+    const grupoDe = {}; S.rubros.forEach((r) => (grupoDe[r.id] = r.grupo || r.nombre));
+    for (const [id, v] of Object.entries(montos)) {
+      const t = tipoDe[id]; if (!por[t] || !v) continue;
+      const g = t === 'ingreso' ? (rubroPorId(id) || {}).nombre || id : grupoDe[id];
+      por[t][g] = (por[t][g] || 0) + Number(v);
+    }
+    return { mes: m, real: false, ing: sumaObj(por.ingreso), egr: sumaObj(por.fijo) + sumaObj(por.variable),
+      det: [['Ingresos', por.ingreso], ['Gastos fijos', por.fijo], ['Gastos variables (cupo)', por.variable]] };
+  }).filter((x) => x.ing || x.egr);
+}
+function renderEvol() {
+  const serie = serieEvol();
+  const reales = serie.filter((x) => x.real);
+  if (reales.length) {
+    const d = reales.reduce((t, x) => t + x.ing - x.egr, 0);
+    $('evResumen').textContent = 'En los meses reales (' + mesCorto(reales[0].mes) + ' a ' + mesCorto(reales[reales.length - 1].mes) + ') ' +
+      (d < 0 ? 'salieron ' + fmt(-d) + ' más de lo que entró.' : 'entraron ' + fmt(d) + ' más de lo que salió.');
+  } else $('evResumen').textContent = '';
+  // Gráfico
+  const W = Math.max(560, serie.length * 74), H = 260, top = 18, bottom = 46, left = 46;
+  const max = Math.max(1, ...serie.map((x) => Math.max(x.ing, x.egr)));
+  const esc = (v) => (H - top - bottom) * v / max;
+  const ns = 'http://www.w3.org/2000/svg';
+  const mk = (t, a, txt) => { const e = document.createElementNS(ns, t); for (const [k, v] of Object.entries(a)) e.setAttribute(k, v); if (txt !== undefined) e.textContent = txt; return e; };
+  const svgEl = mk('svg', { viewBox: '0 0 ' + W + ' ' + H, width: '100%', role: 'img', 'aria-label': 'Ingresos y gastos por mes' });
+  const paso = (W - left) / Math.max(1, serie.length);
+  [0, 0.25, 0.5, 0.75, 1].forEach((f) => {
+    const y = H - bottom - (H - top - bottom) * f;
+    svgEl.append(mk('line', { x1: left, x2: W, y1: y, y2: y, stroke: '#ece6f6' }));
+    svgEl.append(mk('text', { x: left - 6, y: y + 4, 'text-anchor': 'end', 'font-size': 10, fill: '#7a7192' }, (max * f / 1e6).toFixed(f ? 1 : 0) + 'M'));
+  });
+  serie.forEach((x, i) => {
+    const cx = left + paso * i + paso / 2, bw = Math.min(22, paso / 3.2), op = x.real ? 1 : 0.4;
+    const bi = mk('rect', { x: cx - bw - 2, y: H - bottom - esc(x.ing), width: bw, height: esc(x.ing), rx: 3, fill: '#4f9d7f', opacity: op });
+    bi.append(mk('title', {}, mesCorto(x.mes) + ' · ingresos ' + fmt(x.ing)));
+    const be = mk('rect', { x: cx + 2, y: H - bottom - esc(x.egr), width: bw, height: esc(x.egr), rx: 3, fill: '#6b58a6', opacity: op });
+    be.append(mk('title', {}, mesCorto(x.mes) + ' · gastos ' + fmt(x.egr)));
+    svgEl.append(bi, be);
+    svgEl.append(mk('text', { x: cx, y: H - bottom + 15, 'text-anchor': 'middle', 'font-size': 11, fill: '#2a2340', 'font-weight': x.mes === mesDeHoy() ? 700 : 400 }, mesCorto(x.mes)));
+    const dif = x.ing - x.egr;
+    svgEl.append(mk('text', { x: cx, y: H - bottom + 31, 'text-anchor': 'middle', 'font-size': 10, fill: dif < 0 ? '#c9505e' : '#4f9d7f' }, (dif < 0 ? '−' : '+') + (Math.abs(dif) / 1e6).toFixed(1) + 'M'));
+  });
+  $('evChart').replaceChildren(svgEl);
+  // Tabla
+  const tabla = $('evTabla'); tabla.replaceChildren();
+  serie.forEach((x) => {
+    const dif = x.ing - x.egr;
+    const det = el('div', { class: 'det' });
+    x.det.forEach(([titulo, obj]) => {
+      const ent = Object.entries(obj || {}).filter(([, v]) => v).sort((a, b) => b[1] - a[1]);
+      if (!ent.length) return;
+      det.append(el('span', { class: 'h' }, titulo + ' · ' + fmt(sumaObj(obj))));
+      ent.forEach(([k, v]) => det.append(el('span', {}, k), el('b', { style: 'text-align:right' }, fmt(v))));
+    });
+    if (x.nota) det.append(el('span', { class: 'h', style: 'text-transform:none;font-weight:400' }, x.nota));
+    tabla.append(el('details', { class: 'ev' },
+      el('summary', {},
+        el('span', {}, nombreMes(x.mes), el('small', {}, el('span', { class: 'tag' + (x.real ? ' real' : '') }, x.real ? 'real' : 'plan'))),
+        el('span', {}, fmt(x.ing)), el('span', {}, fmt(x.egr)),
+        el('span', { class: dif < 0 ? 'neg' : 'pos', style: 'font-weight:700' }, fmt(dif))),
+      det));
+  });
+}
+
 // ---------- CSV ----------
 function descargar(nombre, filas) {
   const txt = '﻿' + filas.map((f) => f.map((v) => {
@@ -772,55 +1015,110 @@ async function csvPlan() {
 }
 $('csvPlan').onclick = csvPlan; $('csvPlan2').onclick = csvPlan;
 
-// ---------- plan inicial (desde la planilla Presupuesto_hogar_Kovac, nov-26 a jun-27) ----------
+// ---------- plan inicial (desde la planilla Presupuesto_hogar_Kovac y los resúmenes de octubre 2026) ----------
 const MESES_INI = ['2026-11', '2026-12', '2027-01', '2027-02', '2027-03', '2027-04', '2027-05', '2027-06'];
-const PLAN_INI = [
-  ['sueldo-simon', 'Sueldo Simón', 'ingreso', [5000000, 5000000, 5000000, 5000000, 5000000, 5000000, 5000000, 5000000]],
-  ['aguinaldo', 'Medio aguinaldo', 'ingreso', [0, 2900000, 0, 0, 0, 0, 0, 0]],
-  ['bono', 'Bono anual', 'ingreso', [0, 0, 0, 0, 0, 10500000, 0, 0]],
-  ['transf-vir', 'Transferencia Vir', 'ingreso', [3000000, 3000000, 3000000, 3000000, 3000000, 3000000, 3000000, 3000000]],
-  ['alquiler', 'Alquiler depto CABA', 'ingreso', [537000, 563850, 563850, 563850, 592043, 592043, 592043, 621645]],
-  ['reintegro-personal', 'Reintegro Personal depto', 'ingreso', [96473, 96473, 96473, 96473, 96473, 96473, 96473, 96473]],
-  ['hipoteca', 'Hipoteca UVA Santander', 'fijo', [1333818, 1359161, 1384985, 1411299, 1438114, 1465438, 1493282, 1521654]],
-  ['expensas', 'Expensas (luz, agua, gym)', 'fijo', [1524799, 1524799, 1524799, 1524799, 1524799, 1524799, 1524799, 1524799]],
-  ['arba', 'ARBA plan patentes', 'fijo', [1100000, 1100000, 1100000, 0, 0, 0, 0, 0]],
-  ['patente-ranger', 'Patente Ranger', 'fijo', [0, 1500000, 0, 0, 0, 0, 0, 0]],
-  ['cuotas-anteriores', 'Cuotas de compras anteriores', 'fijo', [1749013, 1261380, 956425, 330769, 231250, 198100, 140543, 35780]],
-  ['cuotas-nuevas', 'Cuotas nuevas (estimado)', 'fijo', [0, 100000, 200000, 300000, 300000, 300000, 300000, 300000]],
-  ['seguros', 'Seguros', 'fijo', [537463, 537463, 461715, 461715, 461715, 476715, 476715, 476715]],
-  ['comisiones', 'Comisiones bancarias', 'fijo', [216000, 210000, 210000, 113000, 113000, 113000, 113000, 113000]],
-  ['impuestos-usd', 'Impuestos compras en USD', 'fijo', [127000, 25000, 25000, 25000, 25000, 25000, 25000, 25000]],
-  ['publicidad-recetario', 'Publicidad recetario', 'fijo', [177000, 0, 0, 0, 0, 0, 0, 0]],
-  ['movilidad', 'Movilidad (nafta y peajes)', 'variable', [1034000, 1034000, 800000, 900000, 900000, 900000, 900000, 900000]],
-  ['super', 'Súper y almacén', 'variable', [700000, 700000, 700000, 700000, 700000, 700000, 700000, 700000]],
-  ['comida', 'Comida afuera y salidas', 'variable', [153000, 153000, 153000, 153000, 153000, 153000, 153000, 153000]],
-  ['peon', 'Peón', 'variable', [180000, 180000, 180000, 180000, 180000, 180000, 180000, 180000]],
-  ['comercios', 'Comercios sin QR', 'variable', [200000, 200000, 200000, 200000, 200000, 200000, 200000, 200000]],
-  ['servicios', 'Servicios y suscripciones', 'variable', [307000, 230000, 230000, 230000, 230000, 230000, 230000, 230000]],
-  ['regalos', 'Regalos', 'variable', [0, 500000, 0, 0, 0, 0, 0, 0]],
-  ['imprevistos', 'Imprevistos', 'variable', [400000, 400000, 400000, 400000, 400000, 400000, 400000, 400000]],
-  ['compras-cuotas', 'Compras en cuotas', 'control', [300000, 300000, 300000, 300000, 300000, 300000, 300000, 300000]]
+const T = (v) => Array(8).fill(v);
+// [id, nombre, tipo, grupo, medio, montos nov-26 … jun-27]
+const PLAN_V2 = [
+  ['sueldo-simon', 'Sueldo Simón', 'ingreso', 'Ingresos', '', T(5000000)],
+  ['aguinaldo', 'Medio aguinaldo', 'ingreso', 'Ingresos', '', [0, 2900000, 0, 0, 0, 0, 0, 0]],
+  ['bono', 'Bono anual', 'ingreso', 'Ingresos', '', [0, 0, 0, 0, 0, 10500000, 0, 0]],
+  ['transf-vir', 'Transferencia Vir', 'ingreso', 'Ingresos', '', T(3000000)],
+  ['alquiler', 'Alquiler depto CABA', 'ingreso', 'Ingresos', '', [537000, 563850, 563850, 563850, 592043, 592043, 592043, 621645]],
+  ['reintegro-personal', 'Reintegro Personal depto', 'ingreso', 'Ingresos', '', T(96473)],
+
+  ['hipoteca', 'Hipoteca UVA Santander', 'fijo', 'Vivienda', 'Débito Santander', [1333818, 1359161, 1384985, 1411299, 1438114, 1465438, 1493282, 1521654]],
+  ['expensas', 'Expensas (luz, agua, gym)', 'fijo', 'Vivienda', 'Transferencia', T(1524799)],
+
+  ['cuotas-galicia', 'Cuotas Visa Galicia', 'fijo', 'Cuotas', 'Visa Galicia', [565728, 392234, 340271, 47696, 47696, 47696, 47696, 0]],
+  ['cuotas-hsbc', 'Cuotas Visa Galicia (ex HSBC)', 'fijo', 'Cuotas', 'Visa Galicia (ex HSBC)', [613960, 406576, 264937, 169755, 92353, 59203, 41368, 35780]],
+  ['cuotas-bbva', 'Cuotas Visa BBVA', 'fijo', 'Cuotas', 'Visa BBVA', [238283, 201756, 201756, 22117, 0, 0, 0, 0]],
+  ['cuotas-santander', 'Cuotas Visa Santander', 'fijo', 'Cuotas', 'Visa Santander', [331042, 260814, 149462, 91201, 91201, 91201, 51479, 0]],
+  ['cuotas-nuevas', 'Cuotas nuevas (estimado)', 'fijo', 'Cuotas', 'Tarjetas (varias)', [0, 100000, 200000, 300000, 300000, 300000, 300000, 300000]],
+
+  ['seguro-hogar', 'Seguro hogar (Galicia)', 'fijo', 'Seguros', 'Visa Galicia', T(257519)],
+  ['seguro-ranger', 'Seguro auto Ranger (Fed. Patronal)', 'fijo', 'Seguros', 'Visa Santander', [186189, 186189, 0, 0, 0, 0, 0, 0]],
+  ['seguro-agile', 'Seguro auto Agile (Fed. Patronal)', 'fijo', 'Seguros', 'Visa Santander', [74559, 74559, 85000, 85000, 85000, 0, 0, 0]],
+  ['seguro-civic', 'Seguro auto Civic (a cotizar)', 'fijo', 'Seguros', 'Visa Santander', [0, 0, 100000, 100000, 100000, 100000, 100000, 100000]],
+  ['seguro-fit', 'Seguro auto Fit (a cotizar)', 'fijo', 'Seguros', 'Visa Santander', [0, 0, 0, 0, 0, 100000, 100000, 100000]],
+  ['seguro-celular', 'Seguro celular (SMG)', 'fijo', 'Seguros', 'Visa Santander', T(19196)],
+
+  ['com-eminent', 'Paquete Eminent Galicia', 'fijo', 'Bancos', 'Visa Galicia', T(82700)],
+  ['com-hsbc', 'Mantenimiento Visa ex HSBC', 'fijo', 'Bancos', 'Visa Galicia (ex HSBC)', T(30300)],
+  ['com-bbva', 'Comisión Black BBVA', 'fijo', 'Bancos', 'Visa BBVA', [97000, 97000, 97000, 0, 0, 0, 0, 0]],
+  ['com-sorpresa', 'Programa Sorpresa Santander', 'fijo', 'Bancos', 'Débito Santander', [6000, 0, 0, 0, 0, 0, 0, 0]],
+
+  ['arba', 'ARBA plan patentes', 'fijo', 'Impuestos', 'Débito Santander', [1100000, 1100000, 1100000, 0, 0, 0, 0, 0]],
+  ['patente-ranger', 'Patente Ranger', 'fijo', 'Impuestos', 'Transferencia', [0, 1500000, 0, 0, 0, 0, 0, 0]],
+  ['impuestos-usd', 'Impuestos por compras en USD', 'fijo', 'Impuestos', 'Visa Galicia', [127000, 25000, 25000, 25000, 25000, 25000, 25000, 25000]],
+
+  ['srv-personal', 'Personal (celulares)', 'fijo', 'Servicios', 'Mercado Pago', T(48015)],
+  ['srv-personal-depto', 'Personal del depto (lo reintegra el inquilino)', 'fijo', 'Servicios', 'Visa Galicia', T(96473)],
+  ['srv-directv', 'DirecTV', 'fijo', 'Servicios', 'Mercado Pago', T(52270)],
+  ['srv-disney', 'Disney+', 'fijo', 'Servicios', 'Mercado Pago', T(23999)],
+  ['srv-hbo', 'HBO Max', 'fijo', 'Servicios', 'Visa Galicia', T(13903)],
+  ['srv-usd', 'Netflix, Spotify, Google y Claude (USD)', 'fijo', 'Servicios', 'Tarjetas (varias)', T(65450)],
+  ['srv-pedidosya', 'PedidosYa Plus', 'fijo', 'Servicios', 'Visa Santander', T(6890)],
+  ['srv-recorte', 'Recorte de servicios a definir', 'fijo', 'Servicios', '', [0, -77000, -77000, -77000, -77000, -77000, -77000, -77000]],
+
+  ['publicidad-recetario', 'Publicidad recetario', 'fijo', 'Otros', 'Visa Galicia', [177000, 0, 0, 0, 0, 0, 0, 0]],
+
+  ['movilidad', 'Combustible', 'variable', 'Movilidad', '', [934000, 934000, 720000, 810000, 810000, 810000, 810000, 810000]],
+  ['peajes', 'Peajes', 'variable', 'Movilidad', '', [100000, 100000, 80000, 90000, 90000, 90000, 90000, 90000]],
+  ['super', 'Súper y almacén', 'variable', 'Casa', '', T(700000)],
+  ['peon', 'Peón', 'variable', 'Casa', '', T(180000)],
+  ['comercios', 'Comercios sin QR', 'variable', 'Casa', '', T(200000)],
+  ['comida', 'Comida afuera y salidas', 'variable', 'Salidas', '', T(153000)],
+  ['regalos', 'Regalos', 'variable', 'Otros', '', [0, 500000, 0, 0, 0, 0, 0, 0]],
+  ['imprevistos', 'Imprevistos', 'variable', 'Otros', '', T(400000)],
+  ['compras-cuotas', 'Compras en cuotas', 'control', 'Cuotas', '', T(300000)]
 ];
+const VIEJOS = ['seguros', 'comisiones', 'cuotas-anteriores', 'servicios'];
 const AHORRO_INI = [-1100000, 400000, 0, 1500000, 1600000, 12100000, 1600000, 1700000];
 // Movimientos del fondo en USD: nov ½ Agile; dic ½ Agile + venta Ranger − Civic − gastos; abr venta Agile − Fit − gastos
 const USD_INI = [-3250, 530, 0, 0, 0, -7480, 0, 0];
 const FONDO_INI = { saldoInicialUsd: 6865, mesInicial: '2026-11', reservaUsd: 1500, tipoCambio: 1540, metaUsd: 15900 };
+// Historia real de la cuenta Santander (y Mercado Pago en octubre). Transferencias de Vir de fin de mes = mes siguiente.
+const HISTORIAL = {
+  '2026-08': { ingresos: { 'Sueldo Simón': 5818936, 'Transferencias Vir': 3300000, 'Alquiler depto': 507200, 'Promos e intereses': 25033 },
+    egresos: { 'Hipoteca': 1260265, 'Expensas': 1419255, 'Pago de tarjetas': 4118388, 'Cargas a Mercado Pago': 1820000, 'Pagos a personas': 668000, 'Extracción de efectivo': 600000, 'Comisiones Santander': 6400 },
+    nota: 'Mercado Pago figura por lo que se le transfirió en el mes.' },
+  '2026-09': { ingresos: { 'Sueldo Simón': 5608441, 'Transferencias Vir': 1800000, 'Alquiler depto (con reintegro Personal)': 631500, 'Promos e intereses': 20024 },
+    egresos: { 'Hipoteca': 1286459, 'Expensas': 1502480, 'Pago de tarjetas': 3562067, 'Cargas a Mercado Pago': 1050000, 'Compras con débito': 375568, 'Pagos a personas': 302000, 'Comisiones Santander': 6400 },
+    nota: 'Mercado Pago figura por lo que se le transfirió en el mes.' },
+  '2026-10': { ingresos: { 'Sueldo Simón': 5597494, 'Transferencias Vir': 1500000, 'Alquiler depto': 537000, 'Promos e intereses': 22013 },
+    egresos: { 'Hipoteca': 1308948, 'Expensas': 1524799, 'ARBA plan patentes': 159515, 'Pago de tarjetas': 4115414, 'Gastos en Mercado Pago': 832709, 'Compras con débito': 639490, 'Pagos a personas (incluye abogado $621k)': 829331, 'Comisiones Santander': 6400 },
+    nota: 'La diferencia se cubrió con el saldo de Mercado Pago, que bajó de $1,8M a $34k.' }
+};
+function aplicarPlanV2(lote, nuevo) {
+  PLAN_V2.forEach(([id, nombre, tipo, grupo, medio], i) =>
+    lote.set(doc(colRubros, id), { nombre, tipo, grupo, medio, orden: i, activo: true }, { merge: true }));
+  MESES_INI.forEach((m, k) => {
+    const montos = {};
+    PLAN_V2.forEach(([id, , , , , v]) => { if (nuevo ? v[k] : true) montos[id] = v[k]; });
+    if (!nuevo) VIEJOS.forEach((id) => (montos[id] = 0));
+    lote.set(doc(colMeses, m), nuevo ? { montos, ahorro: AHORRO_INI[k], usd: USD_INI[k] } : { montos }, { merge: true });
+  });
+  if (!nuevo) VIEJOS.forEach((id) => lote.set(doc(colRubros, id), { activo: false }, { merge: true }));
+  for (const [m, h] of Object.entries(HISTORIAL)) lote.set(doc(colHist, m), h);
+  if (nuevo) lote.set(docFondo, FONDO_INI);
+  lote.set(docApp, { version: 2 }, { merge: true });
+}
 $('btnSeed').onclick = async () => {
   const b = $('btnSeed'); b.disabled = true; b.textContent = 'Cargando…';
   try {
     const ya = await getDocs(colRubros);
     if (!ya.empty) { toast('Ya hay rubros cargados'); return; }
-    const lote = writeBatch(db);
-    PLAN_INI.forEach(([id, nombre, tipo], i) => lote.set(doc(colRubros, id), { nombre, tipo, orden: i, activo: true }));
-    MESES_INI.forEach((m, k) => {
-      const montos = {}; PLAN_INI.forEach(([id, , , v]) => { if (v[k]) montos[id] = v[k]; });
-      lote.set(doc(colMeses, m), { montos, ahorro: AHORRO_INI[k], usd: USD_INI[k] });
-    });
-    lote.set(docFondo, FONDO_INI);
-    await lote.commit();
+    const lote = writeBatch(db); aplicarPlanV2(lote, true); await lote.commit();
     toast('Plan cargado');
   } catch (e) { toast('No se pudo cargar: ' + e.message, true); }
   finally { b.disabled = false; b.textContent = 'Cargar plan inicial'; }
+};
+$('btnMigrar').onclick = async () => {
+  const b = $('btnMigrar'); b.disabled = true; b.textContent = 'Actualizando…';
+  try { const lote = writeBatch(db); aplicarPlanV2(lote, false); await lote.commit(); toast('Plan actualizado'); }
+  catch (e) { toast('No se pudo actualizar: ' + e.message, true); }
+  finally { b.disabled = false; b.textContent = 'Actualizar plan'; }
 };
 </script>
 </body>
