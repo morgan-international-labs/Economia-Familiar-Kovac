@@ -410,8 +410,14 @@ import { firebaseConfig, PERSONAS } from './config.js';
 const MEDIOS = ['Débito Santander', 'Visa Santander', 'Visa Galicia', 'Visa Galicia (ex HSBC)', 'Visa BBVA', 'Mercado Pago', 'Efectivo', 'Transferencia'];
 const MEDIOS_FIJOS = MEDIOS.concat(['Tarjetas (varias)']);
 // Medios de la primera versión de la app
-const MEDIOS_VIEJOS = { 'Débito / QR': 'Débito Santander', 'Tarjeta de crédito': 'Tarjeta (sin especificar)' };
-const medioNorm = (m) => MEDIOS_VIEJOS[m] || m || 'Sin asignar';
+// Cualquier "Débito…" que no sea explícitamente otro banco es la cuenta Santander (la única de débito que usan)
+function medioNorm(m) {
+  const t = String(m || '').trim();
+  if (!t) return 'Sin asignar';
+  if (/^d[eé]bito/i.test(t) && !/galicia|bbva|mercado/i.test(t)) return 'Débito Santander';
+  if (/^tarjeta de cr[eé]dito$/i.test(t)) return 'Tarjeta (sin especificar)';
+  return t;
+}
 const HOGAR = 'kovac';
 
 const TIPOS = { ingreso: 'Ingreso', fijo: 'Gasto fijo', variable: 'Gasto variable', control: 'Control (no suma)' };
@@ -524,7 +530,10 @@ function escucharMes() {
     renderTodo(false);
   }, errorDatos));
   S.unsubMes.push(onSnapshot(query(colGastos, where('mes', '==', S.mes)), (snap) => {
-    snap.docs.forEach((d) => { if (d.data().medio === 'Débito / QR') setDoc(doc(colGastos, d.id), { medio: 'Débito Santander' }, { merge: true }).catch(() => {}); });
+    snap.docs.forEach((d) => {
+      const m = d.data().medio;
+      if (m !== 'Débito Santander' && medioNorm(m) === 'Débito Santander') setDoc(doc(colGastos, d.id), { medio: 'Débito Santander' }, { merge: true }).catch(() => {});
+    });
     S.gastos = snap.docs.map((d) => Object.assign({ id: d.id }, d.data()))
       .sort((a, b) => (b.fecha || '').localeCompare(a.fecha || '') || ((b.creadoMs || 0) - (a.creadoMs || 0)));
     renderTodo(false);
